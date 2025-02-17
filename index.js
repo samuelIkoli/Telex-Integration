@@ -9,54 +9,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/telex-webhook", (req, res) => {
-    return res.json({
-        "data": {
-            "date": {"created_at": "2025-02-13", "updated_at": "2025-02-13"},
-            "descriptions": {
-                "app_name": "telex-ci-cd",
-                "app_description": "a simple ci/cd slack notifier application",
-                "app_logo": "http://ec2-13-60-216-247.eu-north-1.compute.amazonaws.com",
-                "app_url": "http://ec2-13-60-216-247.eu-north-1.compute.amazonaws.com",
-                "background_color": "#fff",
-            },
-            "is_active": "True",
-            "integration_type": "modifier",
-            "integration_category": "Monitoring & Logging",
-            "key_features": ["real time updates", "slack notifcation"],
-            "author": "Darasimi",
-            "settings": [
-                {
-                    "label": "slack-channel",
-                    "type": "text",
-                    "required": "True",
-                    "default": "#DevopsAlert",
-                },
-                {
-                    "label": "time interval",
-                    "type": "dropdown",
-                    "required": "True",
-                    "default": "immediate",
-                    "options": ["immediate", "Every 5-min", "Every 10-min", "Every 1-hour"],
-                },
-                {
-                    "label": "event type",
-                    "type": "dropdown",
-                    "required": "True",
-                    "default": "ci_pipeline",
-                    "options": ["ci_pipeline", "cd_pipeline", "deployment", "error"],
-                },
-                {"label": "message", "type": "text", "required": "True", "default": "Basic"},
-                {
-                    "label": "include logs",
-                    "type": "checkbox",
-                    "required": "True",
-                    "default": "true",
-                },
-            ],
-            "target_url": "https://hooks.slack.com/services/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",
-            "tick_url": "https://telex-integration.vercel.app/telex-webhook",
-        }
-    })
+    return res.json({"data":{"date":{"created_at":"2025-02-17","updated_at":"2025-02-17"},"descriptions":{"app_name":"Samex2","app_description":"Trial for notifications","app_logo":"https://my-portfolio-343207.web.app/MyLogo4.png","app_url":"http://13.48.130.169","background_color":"#fff"},"is_active":true,"integration_type":"modifier","integration_category":"Monitoring & Logging","key_features":["Real time notifications"],"author":"Samuel Ikoli","settings":[{"label":"Time interval","type":"dropdown","required":true,"default":"Immediate","options":["Immediate","Every 5 minutes","Every 10 minutes","Every 30 minutes"]}],"target_url":"https://hooks.slack.com/services/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"}})
 })
 
 // Start server
