@@ -52,8 +52,8 @@ app.get("/telex-webhook", (req, res) => {
                     "default": "true",
                 },
             ],
-            "target_url": settings.SLACK_WEBHOOK_URL,
-            "tick_url": settings.TICK_URL,
+            "target_url": "https://hooks.slack.com/services/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",
+            // "tick_url": "",
         }
     })
 })
