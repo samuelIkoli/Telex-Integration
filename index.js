@@ -21,6 +21,7 @@ app.get("/telex-webhook", (req, res) => {
             },
             "is_active": "True",
             "integration_type": "modifier",
+            "integration_category": "Monitoring & Logging",
             "key_features": ["real time updates", "slack notifcation"],
             "author": "Darasimi",
             "settings": [
