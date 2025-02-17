@@ -53,7 +53,7 @@ app.get("/telex-webhook", (req, res) => {
                 },
             ],
             "target_url": "https://hooks.slack.com/services/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",
-            // "tick_url": "",
+            "tick_url": "https://telex-integration.vercel.app/telex-webhook",
         }
     })
 })
