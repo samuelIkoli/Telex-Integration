@@ -39,7 +39,7 @@ app.get("/telex-webhook2", (req, res) => {
               "descriptions": {
                 "app_description": "Detects and tracks profane words in all messages.",
                 "app_logo": "https://my-portfolio-343207.web.app/MyLogo4.png",
-                "app_name": "Sam's Profanity Checker",
+                "app_name": "Sam's Profanity Checker 2",
                 "app_url": "https://profanity-checker-omega.vercel.app/api/integration",
                 "background_color": "#ffffff"
               },
