@@ -125,8 +125,8 @@ app.get("/telex-webhook2", (req, res) => {
 })
 
 app.post('/translate', async (req, res) => {
-  const { text, target_lang } = req.body;
-
+  const { message } = req.body;
+  target_lang = req.body.target_lang || "fr"
   try {
     const response = await fetch('https://openl-translate.p.rapidapi.com/translate', {
       method: 'POST',
@@ -135,7 +135,7 @@ app.post('/translate', async (req, res) => {
         'x-rapidapi-host': 'openl-translate.p.rapidapi.com',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ text, target_lang }),
+      body: JSON.stringify({ text: message, target_lang }),
     });
 
     if (!response.ok) {
