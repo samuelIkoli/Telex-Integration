@@ -119,7 +119,7 @@ app.get("/telex-webhook2", (req, res) => {
                   "required": true
                 }
               ],
-              "target_url": "https://profanity-checker-omega.vercel.app/api/profanitytr"
+              "target_url": "https://profanity-checker-omega.vercel.app/api/profanity"
             }
           })
 })
