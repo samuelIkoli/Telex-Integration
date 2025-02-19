@@ -1,7 +1,11 @@
 const express = require("express");
+const https = require("https")
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+app.use(express.json());
+
 
 // Simple route
 app.get("/", (req, res) => {
@@ -39,7 +43,7 @@ app.get("/telex-webhook2", (req, res) => {
               "descriptions": {
                 "app_description": "Detects and tracks profane words in all messages.",
                 "app_logo": "https://my-portfolio-343207.web.app/MyLogo4.png",
-                "app_name": "Sam's Profanity Checker 3",
+                "app_name": "Sam's Translationary guide",
                 "app_url": "https://profanity-checker-omega.vercel.app/api/integration",
                 "background_color": "#ffffff"
               },
@@ -115,12 +119,50 @@ app.get("/telex-webhook2", (req, res) => {
                   "required": true
                 }
               ],
-              "target_url": "https://profanity-checker-omega.vercel.app/api/profanity"
+              "target_url": "https://profanity-checker-omega.vercel.app/api/profanitykuy"
             }
           })
 })
 
+app.post('/translate', (req, res) => {
+  console.log(req.body)
+  const { text, target_lang } = req.body;
+
+  const options = {
+    method: 'POST',
+    hostname: 'openl-translate.p.rapidapi.com',
+    port: null,
+    path: '/translate',
+    headers: {
+      'x-rapidapi-key': 'c33b36b6dcmshf7d36d91be00cf4p19da21jsn4a933d53f38c',
+      'x-rapidapi-host': 'openl-translate.p.rapidapi.com',
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const apiReq = https.request(options, (apiRes) => {
+    const chunks = [];
+
+    apiRes.on('data', (chunk) => {
+      chunks.push(chunk);
+    });
+
+    apiRes.on('end', () => {
+      const body = Buffer.concat(chunks).toString();
+      res.json(JSON.parse(body)); // Respond with translated data
+    });
+  });
+
+  apiReq.on('error', (error) => {
+    console.error(error);
+    res.status(500).json({ error: 'Translation API error', details: error.message });
+  });
+
+  apiReq.write(JSON.stringify({ target_lang, text }));
+  apiReq.end();
+});
+
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
