@@ -119,47 +119,40 @@ app.get("/telex-webhook2", (req, res) => {
                   "required": true
                 }
               ],
-              "target_url": "https://profanity-checker-omega.vercel.app/api/profanity"
+              "target_url": "https://telex-integration.vercel.app/translate"
             }
           })
 })
 
-app.post('/translate', (req, res) => {
-  console.log(req.body)
+app.post('/translate', async (req, res) => {
   const { text, target_lang } = req.body;
 
-  const options = {
-    method: 'POST',
-    hostname: 'openl-translate.p.rapidapi.com',
-    port: null,
-    path: '/translate',
-    headers: {
-      'x-rapidapi-key': 'c33b36b6dcmshf7d36d91be00cf4p19da21jsn4a933d53f38c',
-      'x-rapidapi-host': 'openl-translate.p.rapidapi.com',
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const apiReq = https.request(options, (apiRes) => {
-    const chunks = [];
-
-    apiRes.on('data', (chunk) => {
-      chunks.push(chunk);
+  try {
+    const response = await fetch('https://openl-translate.p.rapidapi.com/translate', {
+      method: 'POST',
+      headers: {
+        'x-rapidapi-key': 'c33b36b6dcmshf7d36d91be00cf4p19da21jsn4a933d53f38c',
+        'x-rapidapi-host': 'openl-translate.p.rapidapi.com',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text, target_lang }),
     });
 
-    apiRes.on('end', () => {
-      const body = Buffer.concat(chunks).toString();
-      res.json(JSON.parse(body)); // Respond with translated data
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return res.status(200).json({
+      "event_name": "message_translated",
+      "message": data.translatedText,
+      "status": "success",
+      "username": "samex_translator"
     });
-  });
-
-  apiReq.on('error', (error) => {
-    console.error(error);
-    res.status(500).json({ error: 'Translation API error', details: error.message });
-  });
-
-  apiReq.write(JSON.stringify({ target_lang, text }));
-  apiReq.end();
+  } catch (error) {
+    console.error('Translation error:', error);
+    return res.status(500).json({ error: error.message });
+  }
 });
 
 // Start server
