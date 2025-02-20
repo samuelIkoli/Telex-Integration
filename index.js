@@ -6,6 +6,22 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
+async function TwelveDemo(base, quote) {
+  const demoKey = "3086f380e87b4353a4fd98f1a2c71b42";
+  const url = `https://api.twelvedata.com/time_series?symbol=${base}/${quote}&interval=1day&apikey=${demoKey}`;
+
+  if (base === quote) {
+    return 1;
+  } else {
+    try {
+      const response = await axios.get(url);
+      return response.data?.values?.[0]?.close || "Rate error";
+    } catch (error) {
+      console.error(`❌ Error fetching rate for ${base}/${quote}:`, error.message);
+      return "Rate error";
+    }
+  }
+}
 
 // Simple route
 app.get("/", (req, res) => {
@@ -18,8 +34,8 @@ app.get("/integration.json", (req, res) => {
   const integration = {
     data: {
       date: {
-        created_at: "2025-02-20",
-        updated_at: "2025-02-20",
+        created_at: "YYYY-MM-DD",
+        updated_at: "YYYY-MM-DD",
       },
       descriptions: {
         app_description:
@@ -55,117 +71,59 @@ app.get("/integration.json", (req, res) => {
   return res.json(integration);
 });
 
-app.get("/telex-webhook", (req, res) => {
-    return res.json({
-        "data":{
-            "date":{
-                "created_at":"2025-02-17",
-                "updated_at":"2025-02-17"
-            },
-            "descriptions":{
-                "app_name":"Samex2",
-                "app_description":"Trial for notifications",
-                "app_logo":"https://my-portfolio-343207.web.app/MyLogo4.png",
-                "app_url":"http://13.48.130.169",
-                "background_color":"#fff"}, 
-                "is_active":true,"integration_type":"modifier",
-                "integration_category":"Monitoring & Logging",
-                "key_features":["Real time notifications"],
-                "author":"Samuel Ikoli",
-                "settings":[{"label":"customProfaneWords","type":"multi-select","description":"Select custom profane words to track.","required":true,"default":"fuck,shit,ass,bastard,bitch,dick,cock,pussy,damn,fucking,motherfucker,asshole,prick,dumbass,fucktard,shithead"},{"label":"caseSensitivity","type":"checkbox","description":"Enable case-sensitive profanity detection. If checked, 'Fuck' and 'fuck' will be treated differently.","default":false},{"label":"maskingStyle","type":"dropdown","options":["asterisks","dashes","partial"],"description":"Choose how to mask detected profane words.","default":"partial","required":true},{"label":"actionOnDetection","type":"dropdown","options":["flag","block","replace"],"description":"Decide how to handle detected messages.","default":"flag","required":true},{"label":"notificationOnDetection","type":"dropdown","options":["Yes","No"],"description":"Notify admins when a profane message is detected.","default":"No","required":true},{"label":"WebhookUrl","type":"text","description":"Specify the webhook url of the channel to notify admin","default":"https://my-webhook-url.com","required":true},{"label":"maxProfanityCount","type":"number","description":"Set the maximum allowed profane words per message.","default":3,"required":true}],
-                "target_url":"https://hooks.slack.com/services/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"}})
-})
 
-app.get("/telex-webhook2", (req, res) => {
-    return res.json({
-            "data": {
-              "date": {
-                "created_at": "2025-02-18",
-                "updated_at": "2025-02-18"
-              },
-              "descriptions": {
-                "app_description": "Detects and tracks profane words in all messages.",
-                "app_logo": "https://my-portfolio-343207.web.app/MyLogo4.png",
-                "app_name": "Sam's Translationary guide",
-                "app_url": "https://profanity-checker-omega.vercel.app/api/integration",
-                "background_color": "#ffffff"
-              },
-              "is_active": false,
-              "integration_type": "modifier",
-              "key_features": [
-                "Monitor and filter out offensive language from messages in real-time.",
-                "Notify admins when offensive language is detected.",
-                "Allow customization of the profanity list and sensitivity settings.",
-                "Integrate with chat platforms like Slack and Teams for seamless filtering."
-              ],
-              "permissions": {
-                "events": [
-                  "Monitor and filter out offensive language from messages in real-time.",
-                  "Notify admins when offensive language is detected.",
-                  "Allow customization of the profanity list and sensitivity settings.",
-                  "Integrate with chat platforms like Slack and Teams for seamless filtering."
-                ]
-              },
-              "author": "Samuel Ikoli",
-              "integration_category": "Communication & Collaboration",
-              "website": "https://profanity-checkers.vercel.app",
-              "settings": [
-                {
-                  "label": "customProfaneWords",
-                  "type": "multi-select",
-                  "description": "Select custom profane words to track.",
-                  "required": true,
-                  "default": "fuck,shit,ass,bastard,bitch,dick,cock,pussy,damn,fucking,motherfucker,asshole,prick,dumbass,fucktard,shithead"
-                },
-                {
-                  "label": "caseSensitivity",
-                  "type": "checkbox",
-                  "description": "Enable case-sensitive profanity detection. If checked, 'Fuck' and 'fuck' will be treated differently.",
-                  "default": false
-                },
-                {
-                  "label": "maskingStyle",
-                  "type": "dropdown",
-                  "options": ["asterisks", "dashes", "partial"],
-                  "description": "Choose how to mask detected profane words.",
-                  "default": "partial",
-                  "required": true
-                },
-                {
-                  "label": "actionOnDetection",
-                  "type": "dropdown",
-                  "options": ["flag", "block", "replace"],
-                  "description": "Decide how to handle detected messages.",
-                  "default": "flag",
-                  "required": true
-                },
-                {
-                  "label": "notificationOnDetection",
-                  "type": "dropdown",
-                  "options": ["Yes", "No"],
-                  "description": "Notify admins when a profane message is detected.",
-                  "default": "No",
-                  "required": true
-                },
-                {
-                  "label": "WebhookUrl",
-                  "type": "text",
-                  "description": "Specify the webhook URL of the channel to notify admin.",
-                  "default": "https://my-webhook-url.com",
-                  "required": true
-                },
-                {
-                  "label": "maxProfanityCount",
-                  "type": "number",
-                  "description": "Set the maximum allowed profane words per message.",
-                  "default": 3,
-                  "required": true
-                }
-              ],
-              "target_url": "https://telex-integration.vercel.app/translate"
-            }
-          })
-})
+
+app.post('/tick', async (req, res) => {
+  async function Get_symbols(req, res) {
+    const payload = req.body || {};
+    if (!payload || Object.keys(payload).length === 0) {
+      console.log("⚠️ No payload supplied, proceeding without it...");
+    }
+  
+    const symbols = [
+      "GBPUSD", "EURJPY",
+      "EURUSD", "EURCHF",
+      "USDCHF", "EURGBP",
+      "USDCAD", "AUDCAD",
+    ];
+  
+    let results = "📈 **Forex Exchange Rates**\n--------------------------\n";
+  
+    try {
+      const promises = symbols.map(async (symbol) => {
+        const base = symbol.slice(0, 3);
+        const quote = symbol.slice(3);
+        const exchangeRate = await TwelveDemo(base, quote);
+        return `${base}/${quote} → 💹 Rate: ${exchangeRate}`;
+      });
+  
+      const rates = await Promise.all(promises);
+      results += rates.join("\n");
+  
+      console.log(results);
+  
+      const telex_data = {
+        message: results,
+        username: "Samex Forex Update",
+        event_name: "Forex Update",
+        status: "success",
+      };
+  
+      const telex_url = process.env.TELEX_WEBHOOK;
+      try {
+        const telresponse = await axios.post(telex_url, telex_data);
+        console.log("✅ Telex response:", telresponse.data);
+        res.status(200).json(telex_data);
+      } catch (error) {
+        console.error("❌ Failed to post to Telex URL:", error.message);
+        res.status(500).json({ error: error.message });
+      }
+    } catch (error) {
+      console.error("❌ Error processing symbols:", error.message);
+      res.status(500).json({ error: "Server error while processing symbols." });
+    }
+  }
+});
 
 app.post('/translate', async (req, res) => {
   const { message } = req.body;
