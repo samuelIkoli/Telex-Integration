@@ -1,5 +1,6 @@
 const express = require("express");
-const https = require("https")
+const https = require("https");
+const integration = require("./integration");
 
 const app = express();
 
@@ -10,6 +11,10 @@ app.use(express.json());
 // Simple route
 app.get("/", (req, res) => {
   return res.send("Hello, World! 🌍");
+});
+
+app.get("/integration.json", (req, res) => {
+  return res.json(integration);
 });
 
 app.get("/telex-webhook", (req, res) => {
