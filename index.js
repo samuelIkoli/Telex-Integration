@@ -47,7 +47,7 @@ app.get("/integration.json", (req, res) => {
           default: "* * * * *",
         },
       ],
-      tick_url: `https://fun-numbers.onrender.com/tick`,
+      tick_url: `${baseUrl}/tick`,
       target_url: "",
     },
   };
