@@ -45,10 +45,10 @@ app.get("/integration.json", (req, res) => {
           label: "interval",
           type: "text",
           required: true,
-          default: "*/5 * * * *",
+          default: "* * * * *",
         },
       ],
-      tick_url: `${baseUrl}/tick`,
+      tick_url: `https://fun-numbers.onrender.com/tick`,
       target_url: "",
     },
   };
