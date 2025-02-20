@@ -42,8 +42,8 @@ app.get("/integration.json", (req, res) => {
           "SSL-Sentinel periodically check the SSL certificates of provided websites, and reports the SSL expiration date for the website",
         app_logo:
           "https://i.pinimg.com/736x/9a/6c/12/9a6c121be8cc5b037526f9922b956db1.jpg",
-        app_name: "SSL-Sentinel",
-        app_url: `${baseUrl}`,
+        app_name: "SSL-Sentinel SAM",
+        app_url: `https://ssl-sentinel-delicate-silence-8135.fly.dev/integration.json`,
         background_color: "#50C878",
       },
       integration_category: "Monitoring & Logging",
@@ -64,7 +64,7 @@ app.get("/integration.json", (req, res) => {
           default: "*/5 * * * *",
         },
       ],
-      tick_url: `${baseUrl}/tick`,
+      tick_url: `https://ssl-sentinel-delicate-silence-8135.fly.dev/integration.json/tick`,
       target_url: "",
     },
   };
