@@ -6,6 +6,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
+const options = {
+  origin: [`http://localhost:${process.env.PORT || 3000}`, "https://telex.im"],
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(options));
+
 async function TwelveDemo(base, quote) {
   const demoKey = "3086f380e87b4353a4fd98f1a2c71b42";
   const url = `https://api.twelvedata.com/time_series?symbol=${base}/${quote}&interval=1day&apikey=${demoKey}`;
