@@ -64,7 +64,7 @@ app.get("/integration.json", (req, res) => {
           default: "*/5 * * * *",
         },
       ],
-      tick_url: `https://ssl-sentinel-delicate-silence-8135.fly.dev/integration.json/tick`,
+      tick_url: `https://ssl-sentinel-delicate-silence-8135.fly.dev/tick`,
       target_url: "",
     },
   };
