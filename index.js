@@ -125,6 +125,58 @@ app.post('/tick', async (req, res) => {
   }
 });
 
+app.get('/tick', async (req, res) => {
+  async function Get_symbols(req, res) {
+    const payload = req.body || {};
+    if (!payload || Object.keys(payload).length === 0) {
+      console.log("⚠️ No payload supplied, proceeding without it...");
+    }
+  
+    const symbols = [
+      "GBPUSD", "EURJPY",
+      "EURUSD", "EURCHF",
+      "USDCHF", "EURGBP",
+      "USDCAD", "AUDCAD",
+    ];
+  
+    let results = "📈 **Forex Exchange Rates**\n--------------------------\n";
+  
+    try {
+      const promises = symbols.map(async (symbol) => {
+        const base = symbol.slice(0, 3);
+        const quote = symbol.slice(3);
+        const exchangeRate = await TwelveDemo(base, quote);
+        return `${base}/${quote} → 💹 Rate: ${exchangeRate}`;
+      });
+  
+      const rates = await Promise.all(promises);
+      results += rates.join("\n");
+  
+      console.log(results);
+  
+      const telex_data = {
+        message: results,
+        username: "Samex Forex Update",
+        event_name: "Forex Update",
+        status: "success",
+      };
+  
+      const telex_url = process.env.TELEX_WEBHOOK;
+      try {
+        const telresponse = await axios.post(telex_url, telex_data);
+        console.log("✅ Telex response:", telresponse.data);
+        res.status(200).json(telex_data);
+      } catch (error) {
+        console.error("❌ Failed to post to Telex URL:", error.message);
+        res.status(500).json({ error: error.message });
+      }
+    } catch (error) {
+      console.error("❌ Error processing symbols:", error.message);
+      res.status(500).json({ error: "Server error while processing symbols." });
+    }
+  }
+});
+
 app.post('/translate', async (req, res) => {
   const { message } = req.body;
   target_lang = req.body.target_lang || "fr"
