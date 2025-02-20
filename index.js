@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
   return res.send("Hello, World! 🌍");
 });
 
-app.get("/integration.json", (req, res) => {
+app.get("/integration", (req, res) => {
   const baseUrl = `${req.protocol}://${req.get("host")}`;
 
   const integration = {
