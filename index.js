@@ -23,10 +23,10 @@ app.get("/integration.json", (req, res) => {
       },
       descriptions: {
         app_description:
-          "SSL-Sentinel periodically check the SSL certificates of provided websites, and reports the SSL expiration date for the website",
+          "This is a notification app to give recurring updates on the price of popular Forex symbols",
         app_logo:
-          "https://i.pinimg.com/736x/9a/6c/12/9a6c121be8cc5b037526f9922b956db1.jpg",
-        app_name: "SSL-Sentinel",
+          "https://my-portfolio-343207.web.app/MyLogo4.png",
+        app_name: "Samex Forex API",
         app_url: `${baseUrl}`,
         background_color: "#50C878",
       },
@@ -34,9 +34,8 @@ app.get("/integration.json", (req, res) => {
       integration_type: "interval",
       is_active: true,
       key_features: [
-        "Periodically checks SSL/TLS certificates for expiration.",
-        "Sends periodics updates.",
-        "Retrieves issuer, validity and encryption details.",
+        "Forex",
+        "Updates.",
       ],
       settings: [
         { label: "site-1", type: "text", required: true, default: "" },
